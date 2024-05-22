@@ -77,13 +77,13 @@ arrowBtn.addEventListener("click", function(e) {
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
-    fetch(`/share/list/${page}`)
+    fetch(`http://127.0.0.1:10000/share/list/${page}`)
     .then((response) => response.json())
     .then((shares) => {
         if(callback){
             callback(shares)
         }
-    }).catch(console.log)
+    })
 }
 const shareWrapper = document.querySelector(".table-layout-container");
 const likeImgUrl = 'share/images/like.png'
@@ -285,7 +285,7 @@ function getGrade() {
 
     // 해당 학년과 학과 다시 로드
     page = 1;
-    const url = `/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
+    const url = `http://127.0.0.1:10000/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
     fetch(url)
         .then(response => response.json())
         .then(shares => {
