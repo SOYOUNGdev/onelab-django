@@ -1,7 +1,7 @@
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
-    fetch(`http://onelab.today/share/review/list/${share_id}/${page}`)
+    fetch(`/share/review/list/${share_id}/${page}`)
     .then((response) => response.json())
     .then((reviews) => {
         if(callback){
