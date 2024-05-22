@@ -77,7 +77,6 @@ arrowBtn.addEventListener("click", function(e) {
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
-    console.log("들어옴")
     fetch(`/share/list/${page}`)
     .then((response) => response.json())
     .then((shares) => {
