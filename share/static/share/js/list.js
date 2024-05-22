@@ -88,6 +88,7 @@ const getList = (callback) => {
 const shareWrapper = document.querySelector(".table-layout-container");
 const likeImgUrl = 'share/images/like.png'
 const showList = (share_info) => {
+    console.log(share_info)
     if (!share_info.hasNext) {
         moreButton.style.display = 'none';
     }else {
