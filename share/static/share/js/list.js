@@ -285,7 +285,7 @@ function getGrade() {
 
     // 해당 학년과 학과 다시 로드
     page = 1;
-    const url = `http://127.0.0.1:10000/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
+    const url = `/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
     fetch(url)
         .then(response => response.json())
         .then(shares => {
