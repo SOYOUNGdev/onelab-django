@@ -77,18 +77,18 @@ arrowBtn.addEventListener("click", function(e) {
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
+    console.log("들어옴")
     fetch(`/share/list/${page}`)
     .then((response) => response.json())
     .then((shares) => {
         if(callback){
             callback(shares)
         }
-    })
+    }).catch(console.log)
 }
 const shareWrapper = document.querySelector(".table-layout-container");
 const likeImgUrl = 'share/images/like.png'
 const showList = (share_info) => {
-    console.log(share_info)
     if (!share_info.hasNext) {
         moreButton.style.display = 'none';
     }else {
