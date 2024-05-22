@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m&1gjc)a!0m&t4-skkigdplzw%e&f)5j@ksztwce%#bqaksqs)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '3.37.187.140', 'onelab.today']
 
 # Application definition
 
@@ -148,10 +147,7 @@ DATABASES = {
         # DBMS가 설치된 서버 PC의 IP
         'HOST': '13.125.132.175',
         # DBMS의 포트번호
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-        }
+        'PORT': '3306'
     }
 }
 
@@ -191,7 +187,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # 파일 접근시
 MEDIA_URL = '/upload/'
 
