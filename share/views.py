@@ -310,12 +310,12 @@ class ShareDetailView(View):
         current_file = post.sharefile_set.first()
 
         # 유사한 게시물 찾기
-        similar_posts = find_similar_posts(all_posts, current_file.file_id if current_file else None)
-        similar_lists = []
-
-        for similar_post, similarity in similar_posts:
-            share = Share.objects.get(id=similar_post.share_id)
-            similar_lists.append(share)
+        # similar_posts = find_similar_posts(all_posts, current_file.file_id if current_file else None)
+        # similar_lists = []
+        #
+        # for similar_post, similarity in similar_posts:
+        #     share = Share.objects.get(id=similar_post.share_id)
+        #     similar_lists.append(share)
 
         context = {
             'share': post,
@@ -328,13 +328,13 @@ class ShareDetailView(View):
             'university_member': university_member,
             'member_like': member_like,
             'profile': profile.path,
-            'similar_posts': similar_lists,  # 유사한 게시물 추가
+            # 'similar_posts': similar_lists,  # 유사한 게시물 추가
         }
 
-        for similar_post, similarity in similar_posts:
-            share = Share.objects.get(id=similar_post.share_id)
-            content = get_file_content(similar_post.path, similar_post.file_id)
-            print(share.id, similarity)
+        # for similar_post, similarity in similar_posts:
+        #     share = Share.objects.get(id=similar_post.share_id)
+        #     content = get_file_content(similar_post.path, similar_post.file_id)
+        #     print(share.id, similarity)
 
         return render(request, 'share/detail.html', context)
 
