@@ -77,7 +77,7 @@ arrowBtn.addEventListener("click", function(e) {
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
-    fetch(`http://onelab.today/share/list/${page}`)
+    fetch(`/share/list/${page}`)
     .then((response) => response.json())
     .then((shares) => {
         if(callback){
@@ -88,6 +88,7 @@ const getList = (callback) => {
 const shareWrapper = document.querySelector(".table-layout-container");
 const likeImgUrl = 'share/images/like.png'
 const showList = (share_info) => {
+    console.log(share_info)
     if (!share_info.hasNext) {
         moreButton.style.display = 'none';
     }else {
@@ -285,7 +286,7 @@ function getGrade() {
 
     // 해당 학년과 학과 다시 로드
     page = 1;
-    const url = `http://onelab.today/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
+    const url = `/share/list/${page}?gradeSort=${gradeSort}&majorSort=${majorSort}&sortOrder=${sortOrder}`;
     fetch(url)
         .then(response => response.json())
         .then(shares => {
