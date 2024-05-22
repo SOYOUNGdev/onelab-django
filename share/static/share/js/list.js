@@ -77,7 +77,7 @@ arrowBtn.addEventListener("click", function(e) {
 let page = 1
 const moreButton = document.getElementById("more");
 const getList = (callback) => {
-    fetch(`http://onelab.today/share/list/${page}`)
+    fetch(`/share/list/${page}`)
     .then((response) => response.json())
     .then((shares) => {
         if(callback){
