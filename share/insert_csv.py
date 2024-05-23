@@ -1,4 +1,7 @@
 import os
+
+from oneLabProject import settings
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "oneLabProject.settings")
 
 import django
@@ -7,7 +10,7 @@ django.setup()
 import pandas as pd
 from django.db import transaction
 from file.models import File
-from share.models import Share, ShareFile
+from share.models import Share, ShareFile, ShareFileContent
 import random
 from docx import Document
 from openpyxl import Workbook
@@ -28,7 +31,7 @@ def insert_files():
                   '의예/의학', '화공/에너지', '화학/생명/환경', '수학/물리', '교육', '언어/문학', '인문학', '미술/예술', '생활과학', '음악/영화', '체육/무용']
         major = random.choice(majors)
 
-        university_members = [9, 11, 23, 13, 14, 15, 16]
+        university_members = [9, 11, 12, 13, 14, 15, 16]
         university_member = random.choice(university_members)
         share_instance = Share.objects.create(
             share_title=f'제목 테스트 {index}',
@@ -48,7 +51,7 @@ def insert_files():
         file_name = f'file_{index}'  # 파일 이름 생성
         extensions = ['.hwp', '.docx', '.xlsx']
         extension = random.choice(extensions)
-        file_path = f'../upload/share/2024/05/21/{file_name}{extension}'  # 파일이 저장될 경로
+        file_path = f'../upload/share/2024/05/23/{file_name}{extension}'  # 파일이 저장될 경로
         if extension == '.hwp':
             with open(file_path, 'wb') as f:
                 f.write(content.encode())  # 파일 내용을 바이너리로 변환하여 저장
@@ -77,6 +80,68 @@ def insert_files():
             name=file_name,
             share=share_instance,
             # file_extension=extension,
+        )
+
+        def get_file_content(file_path, file_id):
+            # ImageFieldFile 객체를 문자열로 변환
+            file_path_str = str(file_path)
+
+            # 파일 경로에서 "../upload/" 제거
+            if file_path_str.startswith("../upload/"):
+                file_path_str = file_path_str.replace("../upload/", "")
+
+            # 절대 경로 생성
+            file_path_full = os.path.join(settings.MEDIA_ROOT, file_path_str)
+
+            if file_path_str.lower().endswith('.hwp'):
+                with open(file_path_full, 'r', encoding='utf-8') as file:
+                    file_content = file.read()
+                return file_content
+            elif file_path_str.lower().endswith('.docx'):
+                file_content = get_docx_content(file_path)
+                return file_content
+            elif file_path_str.lower().endswith('.xlsx'):
+                file_content = get_excel_content(file_path)
+                return file_content
+            else:
+                return '다름'
+
+        def get_excel_content(file_path):
+            try:
+                # 엑셀 파일을 읽어서 DataFrame으로 변환
+                df = pd.read_excel(file_path)
+                # DataFrame을 문자열로 변환하여 반환
+                file_content = df.to_string()
+                return file_content
+            except FileNotFoundError:
+                print(f"File not found: {file_path}")
+                return None
+            except Exception as e:
+                print(f"Error in reading file: {file_path}")
+                print(e)
+                return None
+
+        def get_docx_content(file_path):
+            try:
+                doc = Document(file_path)
+                # 문단별로 텍스트를 추출하여 리스트로 저장
+                paragraphs = [paragraph.text for paragraph in doc.paragraphs]
+                # 리스트를 하나의 문자열로 결합하여 반환
+                file_content = '\n'.join(paragraphs)
+                return file_content
+            except FileNotFoundError:
+                print(f"File not found: {file_path}")
+                return None
+            except Exception as e:
+                print(f"Error in reading file: {file_path}")
+                print(e)
+                return None
+
+        # ShareFileContent 모델에 파일 정보 삽입
+        share_file_text = ShareFileContent.objects.create(
+            share=share_instance,
+            text= get_file_content(share_file_instance.path, share_file_instance),
+            file_name=share_file_instance.name,
         )
 
 # 파일 삽입 함수 실행
